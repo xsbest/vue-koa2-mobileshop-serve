@@ -14,7 +14,7 @@ const userSchema = new Schema({
   password: String,  //相当于type:String
   creatrAt: { type: Date, default: Date.now() },
   LastLogin: { type: Date, default: Date.now() }
-})
+}, { collection: 'user' })
 
 //加盐加密
 userSchema.pre('save', function (next) {
@@ -27,6 +27,18 @@ userSchema.pre('save', function (next) {
     })
   })
 })
+
+//比对
+userSchema.methods = {
+  comparePassword: (_password, password) => {
+    return new Promise((res, rej) => {
+      bcrypt.compare(_password, password, (err, isMatch) => {
+        if (isMatch) { res(isMatch); }
+        else { rej(err); }
+      })
+    })
+  }
+}
 
 //发布模型
 mongoose.model('User', userSchema)
