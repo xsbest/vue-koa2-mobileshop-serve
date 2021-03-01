@@ -1,0 +1,10 @@
+
+{
+  "apps" : [{
+      "name" : "app-name",
+      "script"    : "./index.js",
+      "instances" : "max",
+      "exec_mode" : "cluster" ,
+      "PORT": 3000
+  }]
+}

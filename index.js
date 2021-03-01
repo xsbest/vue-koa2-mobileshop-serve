@@ -1,11 +1,15 @@
 const Koa = require('koa')
 const Router = require('koa-router')
 const fs = require('fs');
-const { connect, initSchemas } = require('./database/init.js');
-const mongoose = require('mongoose')
+const {
+  connect,
+  initSchemas
+} = require('./database/init.js');
 const bodyParser = require('koa-bodyparser')
 const app = new Koa();
 const cors = require('./koa-cors')
+
+
 // // 处理跨域
 app.use(cors);
 // app.use(async (ctx, next) => {
@@ -32,17 +36,18 @@ router.use('/goods', goods.routes())
 app.use(router.routes()).use(router.allowedMethods())
 
 
-  ; (async () => {
-    await connect()
-    initSchemas()
-    // const User = mongoose.model('User')
-    // let oneUser = new User({ userName: 'xs3', password: '123456' })
-    // oneUser.save().then(() => {
-    //   console.log('插入成功');
-    // })
-    // let user = await User.find({}).exec()
-    // console.log(user);
-  })()
+;
+(async () => {
+  await connect()
+  initSchemas()
+  // const User = mongoose.model('User')
+  // let oneUser = new User({ userName: 'xs3', password: '123456' })
+  // oneUser.save().then(() => {
+  //   console.log('插入成功');
+  // })
+  // let user = await User.find({}).exec()
+  // console.log(user);
+})()
 
 const render = async (page) => {
   return new Promise((res, rej) => {
@@ -57,7 +62,6 @@ const render = async (page) => {
   })
 };
 
-
 router.get('/data', async (ctx) => {
   let data = await render('content')
   ctx.body = data
@@ -65,8 +69,6 @@ router.get('/data', async (ctx) => {
 
 app.use(router.routes())
   .use(router.allowedMethods());
-
-
 
 app.listen(3000, () => {
   console.log('服务器已启动····················');

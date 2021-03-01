@@ -63,7 +63,7 @@ router.get('/insertAllCategorySub', async (ctx) => {
   ctx.body = "开始导入数据"
 })
 
-//** 获取商品详情信息接口 */
+//**获取商品详情信息接口 */
 router.post('/getDetailGoodsInfo', async (ctx) => {
   try {
     let goodsId = ctx.request.body.goodsId
@@ -76,6 +76,67 @@ router.post('/getDetailGoodsInfo', async (ctx) => {
       msg: res
     }
   } catch {
+    ctx.body = {
+      code: 500,
+      msg: err
+    }
+  }
+})
+
+/**获取大类数据接口*/
+router.get('/getCategoryList', async (ctx) => {
+  try {
+    const Category = mongoose.model('Category')
+    let res = await Category.find().exec()
+    ctx.body = {
+      code: 200,
+      res
+    }
+  } catch (err) {
+    ctx.body = {
+      code: "500",
+      msg: err
+    }
+  }
+})
+
+
+/**获取小类数据接口*/
+router.post('/getCategorySubList', async (ctx) => {
+  try {
+    let categoryId = ctx.request.body.categoryId
+    const CategorySub = mongoose.model('CategorySub')
+    let res = await CategorySub.find({
+      MALL_CATEGORY_ID: categoryId
+    }).exec()
+    ctx.body = {
+      code: 200,
+      res
+    }
+  } catch (err) {
+    ctx.body = {
+      code: 500,
+      msg: err
+    }
+  }
+})
+
+/**获取小类商品接口 分页*/
+router.get('/getGoodsLisByCategorySuId', async (ctx) => {
+  try {
+    let cateSubId = ctx.request.body.categoryId
+    let curPage = ctx.request.body.page //当前页数
+    let num = 10 //显示条数
+    let start = (page - 1) * num //数据起始下标
+    const Goods = mongoose.model('Goods')
+    let res = await Goods.find({
+      SUB_ID: cateSubId
+    }).skip(start).limit(10).exec() //skip跳过数量 limit限制显示条数
+    ctx.body = {
+      code: 200,
+      res
+    }
+  } catch (err) {
     ctx.body = {
       code: 500,
       msg: err
