@@ -122,15 +122,15 @@ router.post('/getCategorySubList', async (ctx) => {
 })
 
 /**获取小类商品接口 分页*/
-router.get('/getGoodsLisByCategorySuId', async (ctx) => {
+router.post('/getGoodsListByCategorySubId', async (ctx) => {
   try {
-    let cateSubId = ctx.request.body.categoryId
+    let cateSubId = ctx.request.body.categorySubId
     let curPage = ctx.request.body.page //当前页数
     let num = 10 //显示条数
-    let start = (page - 1) * num //数据起始下标
+    let start = (curPage - 1) * num //数据起始下标
     const Goods = mongoose.model('Goods')
     let res = await Goods.find({
-      SUB_ID: cateSubId
+      SUB_ID: cateSubId,
     }).skip(start).limit(10).exec() //skip跳过数量 limit限制显示条数
     ctx.body = {
       code: 200,
