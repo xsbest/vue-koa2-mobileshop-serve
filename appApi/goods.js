@@ -9,18 +9,21 @@ router.get('/insertAllGoodsInfo', async (ctx) => {
     data = JSON.parse(data)
     let saveCount = 0
     const Goods = mongoose.model('Goods')
-    data.map(val => {
-      console.log(val);
+    data.map((val) => {
+      console.log(val)
       let newGoods = new Goods(val)
-      newGoods.save().then(() => {
-        saveCount++
-        console.log("插入成功" + saveCount);
-      }).catch(err => {
-        console.log(err);
-      })
+      newGoods
+        .save()
+        .then(() => {
+          saveCount++
+          console.log('插入成功' + saveCount)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     })
   })
-  ctx.body = "开始导入数据"
+  ctx.body = '开始导入数据'
 })
 
 //**加载商品大类信息  */
@@ -30,17 +33,20 @@ router.get('/insertAllCategory', async (ctx) => {
     let saveCount = 0
     const Category = mongoose.model('Category')
     data.RECORDS.map((val) => {
-      console.log(val);
+      console.log(val)
       let newCategory = new Category(val)
-      newCategory.save().then(() => {
-        saveCount++;
-        console.log("成功" + saveCount);
-      }).catch((err) => {
-        console.log("失败", err);
-      })
+      newCategory
+        .save()
+        .then(() => {
+          saveCount++
+          console.log('成功' + saveCount)
+        })
+        .catch((err) => {
+          console.log('失败', err)
+        })
     })
   })
-  ctx.body = "开始导入数据"
+  ctx.body = '开始导入数据'
 })
 
 //**加载商品子类信息  */
@@ -50,17 +56,20 @@ router.get('/insertAllCategorySub', async (ctx) => {
     const CategorySub = mongoose.model('CategorySub')
     let saveCount = 0
     data.RECORDS.map((val) => {
-      console.log(val);
+      console.log(val)
       let newCategorySub = new CategorySub(val)
-      newCategorySub.save().then(() => {
-        saveCount++
-        console.log('成功' + saveCount)
-      }).catch(err => {
-        console.log('失败', err);
-      })
+      newCategorySub
+        .save()
+        .then(() => {
+          saveCount++
+          console.log('成功' + saveCount)
+        })
+        .catch((err) => {
+          console.log('失败', err)
+        })
     })
   })
-  ctx.body = "开始导入数据"
+  ctx.body = '开始导入数据'
 })
 
 //**获取商品详情信息接口 */
@@ -69,16 +78,16 @@ router.post('/getDetailGoodsInfo', async (ctx) => {
     let goodsId = ctx.request.body.goodsId
     const Goods = mongoose.model('Goods')
     let res = await Goods.findOne({
-      ID: goodsId
+      ID: goodsId,
     }).exec()
     ctx.body = {
       code: 200,
-      msg: res
+      msg: res,
     }
   } catch {
     ctx.body = {
       code: 500,
-      msg: err
+      msg: err,
     }
   }
 })
@@ -90,16 +99,15 @@ router.get('/getCategoryList', async (ctx) => {
     let res = await Category.find().exec()
     ctx.body = {
       code: 200,
-      res
+      res,
     }
   } catch (err) {
     ctx.body = {
-      code: "500",
-      msg: err
+      code: '500',
+      msg: err,
     }
   }
 })
-
 
 /**获取小类数据接口*/
 router.post('/getCategorySubList', async (ctx) => {
@@ -107,16 +115,16 @@ router.post('/getCategorySubList', async (ctx) => {
     let categoryId = ctx.request.body.categoryId
     const CategorySub = mongoose.model('CategorySub')
     let res = await CategorySub.find({
-      MALL_CATEGORY_ID: categoryId
+      MALL_CATEGORY_ID: categoryId,
     }).exec()
     ctx.body = {
       code: 200,
-      res
+      res,
     }
   } catch (err) {
     ctx.body = {
       code: 500,
-      msg: err
+      msg: err,
     }
   }
 })
@@ -131,17 +139,20 @@ router.post('/getGoodsListByCategorySubId', async (ctx) => {
     const Goods = mongoose.model('Goods')
     let res = await Goods.find({
       SUB_ID: cateSubId,
-    }).skip(start).limit(10).exec() //skip跳过数量 limit限制显示条数
+    })
+      .skip(start)
+      .limit(10)
+      .exec() //skip跳过数量 limit限制显示条数
     ctx.body = {
       code: 200,
-      res
+      res,
     }
   } catch (err) {
     ctx.body = {
       code: 500,
-      msg: err
+      msg: err,
     }
   }
 })
 
-module.exports = router;
+module.exports = router
