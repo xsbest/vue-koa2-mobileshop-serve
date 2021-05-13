@@ -6,7 +6,7 @@ let ObjectId = Schema.Types.ObjectId //主键
 
 const exercisesSchema = new Schema({
   date: Date,
-  sportType: Number, // 0 | 1 | 2    跑步 | 快走 | 跳绳
+  sportType: String, // 0 | 1 | 2 | 3   跑步 | 瑜伽 | 跳绳 | HIIT
   sportTime: String,
 })
 
@@ -20,6 +20,8 @@ const miniUserSchema = new Schema(
     weight: String,
 
     height: String,
+
+    age: String,
 
     exercisesHistory: [exercisesSchema],
   },
