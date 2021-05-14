@@ -34,7 +34,6 @@ router.post('/login', async (ctx) => {
   const User = mongoose.model('User')
   await User.findOne({ userName: userName }).exec()
     .then(async (res) => {
-
       if (res) {
         let newUser = new User()
         await newUser.comparePassword(password, res.password)
